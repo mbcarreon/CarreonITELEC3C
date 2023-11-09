@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,20 @@ Route::middleware([
         return view('dashboard', compact('users'));
     })->name('dashboard');
 });
+
+Route::get('/category', [CategoryController::class, 'show']);
+
+Route::get('/user/{id}', function ($id) {
+    $user = App\Models\User::where('id', '=', $id)->firstOrFail();
+
+    return view('user.show', compact('user'));
+});
+
+Route::get('/category/{id}', function ($id) {
+    $item = App\Models\Category::where('id', '=', $id)->firstOrFail();
+
+    return view('category.show', compact('item'));
+});
+
+Route::get('/create-category', [CategoryController::class, 'create']);
+Route::post('/save-category', [CategoryController::class, 'save']);
